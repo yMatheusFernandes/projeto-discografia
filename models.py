@@ -3,19 +3,19 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
 
-class Genero(Base):
-    __tablename__ = 'generos'
+class Artista(Base):
+    __tablename__ = 'artistas'
     id: Mapped[int] = mapped_column(primary_key=True)
     nome: Mapped[str]
-    filmes: Mapped[list['Filme']] = relationship(back_populates='genero')
+    albuns: Mapped[list['Album']] = relationship(back_populates='artista')
 
-class Filme(Base):
-    __tablename__ = 'filmes'
+class Album(Base):
+    __tablename__ = 'albuns'
     id: Mapped[int] = mapped_column(primary_key=True)
     titulo: Mapped[str]
-    diretor: Mapped[str]
     ano: Mapped[int]
+    genero: Mapped[str]
     nota: Mapped[float] = mapped_column(default=0)
-    assistido: Mapped[bool] = mapped_column(default=False)
-    genero_id: Mapped[int] = mapped_column(ForeignKey('generos.id'))   # FK
-    genero: Mapped['Genero'] = relationship(back_populates='filmes')
+    favorito: Mapped[bool] = mapped_column(default=False)
+    artista_id: Mapped[int] = mapped_column(ForeignKey('artistas.id'))   # FK
+    artista: Mapped['Artista'] = relationship(back_populates='albuns')

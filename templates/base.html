@@ -4,19 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block titulo %}Catálogo de Filmes{% endblock %}</title>
+  <title>{% block titulo %}Discografia CRUD{% endblock %}</title>
   <link rel="stylesheet" href="/static/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="topo">
-    <h1>🎬 Catálogo de Filmes</h1>
+    <h1>🎵 Discografia CRUD</h1>
     <nav>
-      <a href="/filmes">Início</a>
-      <a href="/filmes/novo">+ Novo filme</a>
+      <a href="/albuns">Início</a>
+      <a href="/albuns/novo">+ Novo Álbum</a>
     </nav>
   </header>
   <main class="container">
-    {% block conteudo %}{% endblock %}   <!-- as outras páginas entram aqui -->
+    {% block conteudo %}{% endblock %}
   </main>
 </body>
 </html>

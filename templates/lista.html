@@ -1,26 +1,25 @@
-
 {% extends "base.html" %}
 
 {% block conteudo %}
 <div class="grade">
-  {% for filme in filmes %}
+  {% for album in albuns %}
   <article class="card">
-    <h2>{{ filme.titulo }}</h2>
-    <p class="meta">{{ filme.diretor }} · {{ filme.ano }}</p>
-    <p class="genero">{{ filme.genero }}</p>
-    <p class="nota">⭐ {{ filme.nota }}</p>
-    <p class="status {{ 'assistido' if filme.assistido else 'nao-assistido' }}">
-      {{ '✅ Assistido' if filme.assistido else '⏳ Não assistido' }}
+    <h2>{{ album.titulo }}</h2>
+    <p class="meta">{{ album.artista.nome }} · {{ album.ano }}</p>
+    <p class="genero">{{ album.genero }}</p>
+    <p class="nota">⭐ {{ album.nota }}</p>
+    <p class="status {{ 'favorito' if album.favorito else 'normal' }}">
+      {{ '❤️ Favorito' if album.favorito else '🎧 Ouvir' }}
     </p>
     <div class="acoes">
-      <a class="btn" href="/filmes/{{ filme.id }}/editar">Editar</a>
-      <form action="/filmes/{{ filme.id }}/excluir" method="post">
+      <a class="btn" href="/albuns/{{ album.id }}/editar">Editar</a>
+      <form action="/albuns/{{ album.id }}/excluir" method="post">
         <button class="btn btn-perigo" type="submit">Excluir</button>
       </form>
     </div>
   </article>
   {% else %}
-  <p>Nenhum filme cadastrado ainda.</p>
+  <p class="vazio">Nenhum álbum cadastrado ainda. Que tal adicionar o seu disco favorito?</p>
   {% endfor %}
 </div>
 {% endblock %}

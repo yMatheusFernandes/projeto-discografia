@@ -1,28 +1,27 @@
-
 {% extends "base.html" %}
 
 {% block conteudo %}
 <form class="formulario" method="post"
-      action="{% if filme %}/filmes/{{ filme.id }}/editar{% else %}/filmes{% endif %}">
-  <label>Título
-    <input type="text" name="titulo" value="{{ filme.titulo if filme else '' }}" required>
+      action="{% if album %}/albuns/{{ album.id }}/editar{% else %}/albuns{% endif %}">
+  <label>Título do Álbum
+    <input type="text" name="titulo" value="{{ album.titulo if album else '' }}" required>
   </label>
-  <label>Diretor
-    <input type="text" name="diretor" value="{{ filme.diretor if filme else '' }}" required>
+  <label>Artista (Banda/Cantor)
+    <input type="text" name="artista_nome" value="{{ album.artista.nome if album else '' }}" required>
   </label>
-  <label>Ano
-    <input type="number" name="ano" value="{{ filme.ano if filme else '' }}" required>
+  <label>Ano de Lançamento
+    <input type="number" name="ano" value="{{ album.ano if album else '' }}" required>
   </label>
-  <label>Gênero
-    <input type="text" name="genero" value="{{ filme.genero if filme else '' }}" required>
+  <label>Gênero Musical
+    <input type="text" name="genero" value="{{ album.genero if album else '' }}" required>
   </label>
-  <label>Nota
-    <input type="number" step="0.1" name="nota" value="{{ filme.nota if filme else 0 }}">
+  <label>Nota (0 a 10)
+    <input type="number" step="0.1" name="nota" value="{{ album.nota if album else 0 }}">
   </label>
   <label class="checkbox">
-    <input type="checkbox" name="assistido" {% if filme and filme.assistido %}checked{% endif %}>
-    Assistido
+    <input type="checkbox" name="favorito" {% if album and album.favorito %}checked{% endif %}>
+    Marcar como Favorito
   </label>
-  <button class="btn" type="submit">Salvar</button>
+  <button class="btn" type="submit">Salvar Álbum</button>
 </form>
 {% endblock %}

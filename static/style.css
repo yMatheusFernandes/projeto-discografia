@@ -1,68 +1,124 @@
 /* static/style.css */
 :root {
-  --primaria: #009688;        /* cor principal */
-  --primaria-escura: #00796B;
-  --perigo: #E53935;          /* botão excluir */
-  --fundo: #F4F6F8;
-  --card: #ffffff;
-  --texto: #263238;
-  --sombra: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --raio: 10px;
+  --primaria: #6C63FF;
+  --primaria-escura: #5a52d5;
+  --perigo: #FF6584;
+  --fundo: #121212;
+  --card: #1E1E1E;
+  --texto: #E0E0E0;
+  --texto-secundario: #A0A0A0;
+  --sombra: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --raio: 12px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: var(--fundo);
   color: var(--texto);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
-/* static/style.css */
 .topo {
-  background: var(--primaria);
+  background: var(--card);
   color: #fff;
-  padding: 16px 24px;
+  padding: 20px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: var(--sombra);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid var(--primaria);
 }
-.topo h1 { font-size: 1.4rem; }
+.topo h1 { font-size: 1.5rem; color: var(--primaria); font-weight: 700; }
 .topo nav a {
   color: #fff;
   text-decoration: none;
-  margin-left: 16px;
+  margin-left: 24px;
   font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
-.topo nav a:hover { text-decoration: underline; }
+.topo nav a:hover { background: rgba(108, 99, 255, 0.1); }
 
-/* static/style.css */
 .container {
-  max-width: 960px;
-  margin: 24px auto;
-  padding: 0 16px;
+  max-width: 1000px;
+  margin: 32px auto;
+  padding: 0 20px;
 }
 
-.grade {                                  /* grade responsiva */
+.grade {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
 }
 
 .card {
   background: var(--card);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
-  padding: 16px;
-  transition: transform 0.15s ease;
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
-.card:hover { transform: translateY(-4px); }   /* leve animação */
-.card h2 { font-size: 1.1rem; color: var(--primaria-escura); }
-.card .meta { color: #607D8B; font-size: 0.9rem; }
-.card .nota { font-weight: 700; }
-.card .status { display: inline-block; margin-top: 8px; padding: 3px 10px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
-.card .status.assistido { background: #E8F5E9; color: #2E7D32; }       /* verde */
-.card .status.nao-assistido { background: #ECEFF1; color: #607D8B; }   /* cinza */
-.card .acoes { display: flex; gap: 8px; margin-top: 12px; }
+.card:hover { 
+  transform: translateY(-6px); 
+  box-shadow: 0 12px 32px rgba(108, 99, 255, 0.2);
+  border-color: rgba(108, 99, 255, 0.3);
+}
+.card h2 { font-size: 1.25rem; color: #fff; margin-bottom: 4px; }
+.card .meta { color: var(--primaria); font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; }
+.card .genero { color: var(--texto-secundario); font-size: 0.9rem; margin-bottom: 8px; }
+.card .nota { font-weight: 700; color: #FFD700; margin-bottom: 12px; }
+.card .status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
+.card .status.favorito { background: rgba(255, 101, 132, 0.15); color: #FF6584; }
+.card .status.normal { background: rgba(255, 255, 255, 0.05); color: var(--texto-secundario); }
+
+.acoes { display: flex; gap: 12px; margin-top: 20px; }
+
+.btn {
+  background: var(--primaria);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  flex: 1;
+  transition: background 0.2s;
+  font-size: 0.9rem;
+}
+.btn:hover { background: var(--primaria-escura); }
+.btn-perigo { background: var(--perigo); }
+.btn-perigo:hover { background: #e53935; }
+
+.formulario {
+  background: var(--card);
+  padding: 32px;
+  border-radius: var(--raio);
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: var(--sombra);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.formulario label { display: block; margin-bottom: 20px; font-weight: 600; color: #fff; }
+.formulario input[type="text"],
+.formulario input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.formulario input:focus { outline: none; border-color: var(--primaria); }
+.formulario .checkbox { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.formulario .btn { width: 100%; padding: 14px; font-size: 1.05rem; margin-top: 10px; }
+
+.vazio { text-align: center; color: var(--texto-secundario); font-size: 1.1rem; margin-top: 40px; grid-column: 1 / -1; }
