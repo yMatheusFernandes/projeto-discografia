@@ -345,4 +345,24 @@ body::after {
   background: rgba(255, 255, 255, 0.02);
   border-radius: var(--raio);
   border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .topo {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+  .topo nav {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+  .topo nav a {
+    margin-left: 0;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
 }

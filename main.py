@@ -20,12 +20,7 @@ app = FastAPI(lifespan=lifespan)
 app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
-@app.get('/')                               # raiz → redireciona para a lista
-def home():
-    return RedirectResponse(url='/albuns')
-
-# READ — lista todos os álbuns
-@app.get('/albuns')
+@app.get('/')
 def listar(request: Request, session: Session = Depends(get_session)):
     albuns = session.scalars(select(models.Album)).all()
     return templates.TemplateResponse(request, 'lista.html', {'albuns': albuns})
@@ -52,7 +47,7 @@ def criar(
                          genero=genero, nota=nota, favorito=favorito, artista_id=artista.id)
     session.add(album)
     session.commit()
-    return RedirectResponse(url='/albuns', status_code=303)
+    return RedirectResponse(url='/', status_code=303)
 
 # UPDATE — formulário preenchido
 @app.get('/albuns/{album_id}/editar')
@@ -83,7 +78,7 @@ def atualizar(
     album.nota = nota
     album.favorito = favorito
     session.commit()
-    return RedirectResponse(url='/albuns', status_code=303)
+    return RedirectResponse(url='/', status_code=303)
 
 # DELETE — remove do banco
 @app.post('/albuns/{album_id}/excluir')
@@ -91,4 +86,4 @@ def excluir(album_id: int, session: Session = Depends(get_session)):
     album = session.get(models.Album, album_id)
     session.delete(album)
     session.commit()
-    return RedirectResponse(url='/albuns', status_code=303)
+    return RedirectResponse(url='/', status_code=303)
