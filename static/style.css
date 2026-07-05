@@ -761,6 +761,44 @@ body {
 }
 .rating svg { fill: var(--sp-green); width: 14px; height: 14px; }
 
+/* ─────────────── BOTTOM NAV (mobile) ─────────────── */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--sp-darker);
+  border-top: 1px solid var(--sp-border);
+  padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--sp-subtext);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 4px 16px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+  flex: 1;
+}
+.bottom-nav-item svg {
+  width: 22px; height: 22px;
+  fill: currentColor;
+}
+.bottom-nav-item.active,
+.bottom-nav-item:hover { color: var(--sp-text); }
+.bottom-nav-item.active svg { fill: var(--sp-green); }
+
 /* ─────────────── RESPONSIVE ─────────────── */
 @media (max-width: 900px) {
   .sidebar { width: 72px; padding: 16px 8px; }
@@ -771,15 +809,92 @@ body {
   .sidebar-nav a { justify-content: center; padding: 12px; }
   .sidebar-add-btn { justify-content: center; }
   .albums-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+  .topbar { padding: 12px 20px; }
 }
 
 @media (max-width: 600px) {
+  /* Esconde sidebar, mostra bottom nav */
   .sidebar { display: none; }
-  .topbar { padding: 12px 16px; }
-  .page-hero { flex-direction: column; align-items: flex-start; padding: 24px 16px 16px; }
-  .page-hero-icon { width: 140px; height: 140px; }
-  .page-content { padding: 0 16px 24px; }
-  .albums-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .track-row { grid-template-columns: 32px 1fr 60px 32px; }
-  .add-track-form { flex-direction: column; }
+  .bottom-nav { display: flex; }
+
+  /* Garante espaço para a bottom nav não cobrir conteúdo */
+  .main-content { padding-bottom: 72px; }
+
+  /* Topbar */
+  .topbar { padding: 10px 16px; }
+  .topbar-actions .btn-primary span { display: none; }
+  .topbar-actions .btn-primary {
+    padding: 8px 12px;
+    font-size: 0;
+    gap: 0;
+  }
+  .topbar-actions .btn-primary svg { width: 18px; height: 18px; margin: 0; }
+
+  /* Hero */
+  .page-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 16px 12px;
+    gap: 16px;
+  }
+  .page-hero-icon { width: 120px; height: 120px; }
+  .page-hero-icon svg { width: 56px; height: 56px; }
+  .page-hero-title { font-size: clamp(1.6rem, 8vw, 2.4rem); letter-spacing: -1px; margin-bottom: 10px; }
+  .page-hero-meta { font-size: 0.82rem; gap: 6px; }
+
+  /* Action bar */
+  .action-bar { padding: 12px 16px 8px; gap: 12px; }
+
+  /* Conteúdo da página */
+  .page-content { padding: 0 12px 24px; }
+
+  /* Home */
+  .home-page { padding-top: 4px; }
+  .greeting-title { font-size: clamp(1.4rem, 7vw, 2rem); }
+  .albums-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .album-card { padding: 12px; }
+  .home-section-title { font-size: 1.2rem; }
+
+  /* Quick grid */
+  .quick-grid { grid-template-columns: 1fr; gap: 6px; margin-bottom: 32px; }
+  .quick-card { height: 56px; }
+  .quick-card-cover { width: 56px; height: 56px; }
+
+  /* Tracklist */
+  .tracklist-header {
+    grid-template-columns: 32px 1fr 60px 36px;
+    padding: 0 8px 8px;
+    font-size: 0.65rem;
+  }
+  .track-row {
+    grid-template-columns: 32px 1fr 60px 36px;
+    padding: 8px 8px;
+  }
+  .track-title { padding: 0 8px; font-size: 0.9rem; }
+  .track-duration { font-size: 0.82rem; }
+  .track-delete-btn { opacity: 1; } /* sempre visível em mobile (sem hover) */
+  .tracklist-empty { padding: 32px 16px; }
+
+  /* Formulário de adicionar faixa */
+  .add-track-section { padding: 16px; border-radius: var(--radius); }
+  .add-track-form { flex-direction: column; gap: 10px; }
+  .add-track-field { min-width: unset; flex: unset; width: 100%; }
+  .add-track-form .btn-primary {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 1rem;
+    margin-top: 4px;
+  }
+
+  /* Formulário de álbum */
+  .sp-form { padding: 20px 16px; }
+  .form-page { padding-top: 8px; }
+  .form-page-title { font-size: 1.5rem; }
+  .form-actions { flex-direction: column; }
+  .form-actions .btn-primary,
+  .form-actions .btn-outline { width: 100%; justify-content: center; }
+
+  /* Estado vazio */
+  .home-empty { padding: 60px 16px; }
 }
