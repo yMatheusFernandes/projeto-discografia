@@ -1,27 +1,64 @@
 {% extends "base.html" %}
+{% block titulo %}{{ album.titulo if album else 'Novo Álbum' }} — Discografia{% endblock %}
 
 {% block conteudo %}
-<form class="formulario" method="post"
-      action="{% if album %}/albuns/{{ album.id }}/editar{% else %}/albuns{% endif %}">
-  <label>Título do Álbum
-    <input type="text" name="titulo" value="{{ album.titulo if album else '' }}" required>
-  </label>
-  <label>Artista (Banda/Cantor)
-    <input type="text" name="artista_nome" value="{{ album.artista.nome if album else '' }}" required>
-  </label>
-  <label>Ano de Lançamento
-    <input type="number" name="ano" value="{{ album.ano if album else '' }}" required>
-  </label>
-  <label>Gênero Musical
-    <input type="text" name="genero" value="{{ album.genero if album else '' }}" required>
-  </label>
-  <label>Nota (0 a 10)
-    <input type="number" step="0.1" name="nota" value="{{ album.nota if album else 0 }}">
-  </label>
-  <label class="checkbox">
-    <input type="checkbox" name="favorito" {% if album and album.favorito %}checked{% endif %}>
-    Marcar como Favorito
-  </label>
-  <button class="btn" type="submit">Salvar Álbum</button>
-</form>
+<div class="page-content form-page">
+  <h1 class="form-page-title">
+    {% if album %}Editar Álbum{% else %}Novo Álbum{% endif %}
+  </h1>
+
+  <form class="sp-form" method="post"
+        action="{% if album %}/albuns/{{ album.id }}/editar{% else %}/albuns{% endif %}">
+
+    <div class="sp-field">
+      <label for="titulo">Título do Álbum</label>
+      <input id="titulo" type="text" name="titulo"
+             value="{{ album.titulo if album else '' }}"
+             placeholder="Ex: Abbey Road" required>
+    </div>
+
+    <div class="sp-field">
+      <label for="artista_nome">Artista / Banda</label>
+      <input id="artista_nome" type="text" name="artista_nome"
+             value="{{ album.artista.nome if album else '' }}"
+             placeholder="Ex: The Beatles" required>
+    </div>
+
+    <div class="sp-field">
+      <label for="ano">Ano de Lançamento</label>
+      <input id="ano" type="number" name="ano"
+             value="{{ album.ano if album else '' }}"
+             placeholder="Ex: 1969" min="1900" max="2099" required>
+    </div>
+
+    <div class="sp-field">
+      <label for="genero">Gênero Musical</label>
+      <input id="genero" type="text" name="genero"
+             value="{{ album.genero if album else '' }}"
+             placeholder="Ex: Rock, Pop, Jazz…" required>
+    </div>
+
+    <div class="sp-field">
+      <label for="nota">Nota (0 – 10)</label>
+      <input id="nota" type="number" step="0.1" name="nota"
+             value="{{ album.nota if album else 0 }}"
+             min="0" max="10">
+    </div>
+
+    <label class="sp-checkbox">
+      <input type="checkbox" name="favorito"
+             {% if album and album.favorito %}checked{% endif %}>
+      <span>♥ Marcar como Favorito</span>
+    </label>
+
+    <div class="form-actions">
+      <button class="btn-primary" type="submit" style="flex:1;justify-content:center;padding:12px 20px;font-size:1rem;">
+        {% if album %}Salvar Alterações{% else %}Criar Álbum{% endif %}
+      </button>
+      <a class="btn-outline" href="{% if album %}/albuns/{{ album.id }}{% else %}/{% endif %}">
+        Cancelar
+      </a>
+    </div>
+  </form>
+</div>
 {% endblock %}

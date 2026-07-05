@@ -1,25 +1,83 @@
 {% extends "base.html" %}
+{% block titulo %}Início — Discografia{% endblock %}
 
 {% block conteudo %}
-<div class="grade">
-  {% for album in albuns %}
-  <article class="card">
-    <h2>{{ album.titulo }}</h2>
-    <p class="meta">{{ album.artista.nome }} · {{ album.ano }}</p>
-    <p class="genero">{{ album.genero }}</p>
-    <p class="nota">⭐ {{ album.nota }}</p>
-    <p class="status {{ 'favorito' if album.favorito else 'normal' }}">
-      {{ '❤️ Favorito' if album.favorito else '🎧 Ouvir' }}
-    </p>
-    <div class="acoes">
-      <a class="btn" href="/albuns/{{ album.id }}/editar">Editar</a>
-      <form action="/albuns/{{ album.id }}/excluir" method="post">
-        <button class="btn btn-perigo" type="submit">Excluir</button>
-      </form>
+<div class="page-content home-page">
+
+  <!-- ── Saudação dinâmica ── -->
+  <div class="home-greeting">
+    <h1 class="greeting-title" id="greetingTitle">Boa tarde</h1>
+    <script>
+      const h = new Date().getHours();
+      const el = document.getElementById('greetingTitle');
+      if (h >= 5 && h < 12) el.textContent = 'Bom dia';
+      else if (h >= 12 && h < 18) el.textContent = 'Boa tarde';
+      else el.textContent = 'Boa noite';
+    </script>
+  </div>
+
+  {% if albuns %}
+  <!-- ── Quick picks (últimos 6 álbuns em grid compacto) ── -->
+  <div class="quick-grid">
+    {% for album in albuns[:6] %}
+    <a class="quick-card" href="/albuns/{{ album.id }}">
+      <div class="quick-card-cover" style="background: linear-gradient(135deg,
+        hsl({{ (album.id * 47) % 360 }}, 50%, 28%),
+        hsl({{ (album.id * 47 + 60) % 360 }}, 60%, 15%));">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      </div>
+      <span class="quick-card-title">{{ album.titulo }}</span>
+      <div class="quick-card-play">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+  <!-- ── Seção principal: Seus Álbuns ── -->
+  <section class="home-section">
+    <div class="home-section-header">
+      <h2 class="home-section-title">Seus álbuns</h2>
+      {% if albuns | length > 6 %}
+      <a class="home-section-link" href="/">Ver tudo</a>
+      {% endif %}
     </div>
-  </article>
+    <div class="albums-grid">
+      {% for album in albuns %}
+      <a class="album-card" href="/albuns/{{ album.id }}">
+        <div class="album-card-cover" style="background: linear-gradient(135deg,
+          hsl({{ (album.id * 47) % 360 }}, 50%, 28%),
+          hsl({{ (album.id * 47 + 60) % 360 }}, 60%, 15%));">
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <div class="album-card-play">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
+        <div class="album-card-title">{{ album.titulo }}</div>
+        <div class="album-card-artist">
+          {{ album.artista.nome }} · {{ album.ano }}
+        </div>
+        {% if album.favorito %}
+        <span class="fav-badge">♥</span>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
   {% else %}
-  <p class="vazio">Nenhum álbum cadastrado ainda. Que tal adicionar o seu disco favorito?</p>
-  {% endfor %}
+  <!-- ── Estado vazio ── -->
+  <div class="home-empty">
+    <div class="home-empty-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    </div>
+    <h2>Sua biblioteca está vazia</h2>
+    <p>Comece adicionando seu primeiro álbum à discografia.</p>
+    <a class="btn-primary" href="/albuns/novo" style="font-size:1rem;padding:14px 32px;">
+      + Criar Álbum
+    </a>
+  </div>
+  {% endif %}
+
 </div>
 {% endblock %}

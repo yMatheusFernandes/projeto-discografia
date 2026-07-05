@@ -13,12 +13,14 @@ from database import Base, engine, get_session
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)   # cria as tabelas no Supabase
+    Base.metadata.create_all(bind=engine)   # cria as tabelas no banco
     yield
 
 app = FastAPI(lifespan=lifespan)
 app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
+
+# ─── ÁLBUNS ─────────────────────────────────────────────────────────────────
 
 @app.get('/')
 def listar(request: Request, session: Session = Depends(get_session)):
@@ -49,6 +51,13 @@ def criar(
     session.commit()
     return RedirectResponse(url='/', status_code=303)
 
+# READ — detalhe de um álbum (com músicas)
+@app.get('/albuns/{album_id}')
+def detalhe(album_id: int, request: Request, session: Session = Depends(get_session)):
+    album = session.get(models.Album, album_id)
+    musicas = sorted(album.musicas, key=lambda m: m.numero_faixa)
+    return templates.TemplateResponse(request, 'detalhe.html', {'album': album, 'musicas': musicas})
+
 # UPDATE — formulário preenchido
 @app.get('/albuns/{album_id}/editar')
 def form_editar(album_id: int, request: Request, session: Session = Depends(get_session)):
@@ -78,7 +87,7 @@ def atualizar(
     album.nota = nota
     album.favorito = favorito
     session.commit()
-    return RedirectResponse(url='/', status_code=303)
+    return RedirectResponse(url=f'/albuns/{album_id}', status_code=303)
 
 # DELETE — remove do banco
 @app.post('/albuns/{album_id}/excluir')
@@ -87,3 +96,33 @@ def excluir(album_id: int, session: Session = Depends(get_session)):
     session.delete(album)
     session.commit()
     return RedirectResponse(url='/', status_code=303)
+
+# ─── MÚSICAS ────────────────────────────────────────────────────────────────
+
+# CREATE — adiciona música ao álbum
+@app.post('/albuns/{album_id}/musicas')
+def adicionar_musica(
+    album_id: int,
+    titulo: str = Form(...),
+    duracao: str = Form('0:00'),
+    numero_faixa: int = Form(1),
+    session: Session = Depends(get_session),
+):
+    musica = models.Musica(
+        titulo=titulo,
+        duracao=duracao,
+        numero_faixa=numero_faixa,
+        album_id=album_id,
+    )
+    session.add(musica)
+    session.commit()
+    return RedirectResponse(url=f'/albuns/{album_id}', status_code=303)
+
+# DELETE — remove música
+@app.post('/musicas/{musica_id}/excluir')
+def excluir_musica(musica_id: int, session: Session = Depends(get_session)):
+    musica = session.get(models.Musica, musica_id)
+    album_id = musica.album_id
+    session.delete(musica)
+    session.commit()
+    return RedirectResponse(url=f'/albuns/{album_id}', status_code=303)

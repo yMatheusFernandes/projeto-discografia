@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block titulo %}{{ album.titulo }} — {{ album.artista.nome }}{% endblock %}
+
+{% block conteudo %}
+<!-- ── Hero do Álbum ── -->
+<div class="page-hero" style="background: linear-gradient(180deg, hsl({{ (album.id * 47) % 360 }}, 40%, 20%) 0%, transparent 100%);">
+  <div class="page-hero-icon" style="background: linear-gradient(135deg, hsl({{ (album.id * 47) % 360 }}, 50%, 28%), hsl({{ (album.id * 47 + 60) % 360 }}, 60%, 15%));">
+    <svg viewBox="0 0 24 24" style="fill:rgba(255,255,255,0.25);width:80px;height:80px">
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+    </svg>
+  </div>
+  <div class="page-hero-info">
+    <p class="page-hero-type">Álbum</p>
+    <h1 class="page-hero-title">{{ album.titulo }}</h1>
+    <div class="page-hero-meta">
+      <strong>{{ album.artista.nome }}</strong>
+      <span class="dot">·</span>
+      <span>{{ album.ano }}</span>
+      <span class="dot">·</span>
+      <span>{{ album.genero }}</span>
+      <span class="dot">·</span>
+      <span class="rating">
+        <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        {{ album.nota }}/10
+      </span>
+      {% if album.favorito %}
+      <span class="chip chip-fav">♥ Favorito</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Action Bar ── -->
+<div class="action-bar">
+  <a class="btn-primary" href="/albuns/{{ album.id }}/editar">
+    Editar Álbum
+  </a>
+  <form action="/albuns/{{ album.id }}/excluir" method="post" style="margin:0">
+    <button type="submit" class="btn-delete"
+            onclick="return confirm('Excluir o álbum e todas as suas músicas?')"
+            style="background:transparent;color:var(--sp-subtext);border:1px solid var(--sp-muted);border-radius:500px;padding:8px 20px;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;font-family:inherit">
+      Excluir Álbum
+    </button>
+  </form>
+</div>
+
+<!-- ── Tracklist ── -->
+<div class="page-content">
+  <div class="tracklist-header">
+    <span>#</span>
+    <span style="padding-left:16px">Título</span>
+    <span style="text-align:right">Duração</span>
+    <span></span>
+  </div>
+
+  {% for musica in musicas %}
+  <div class="track-row">
+    <span class="track-num">{{ musica.numero_faixa }}</span>
+    <span class="track-title">{{ musica.titulo }}</span>
+    <span class="track-duration">{{ musica.duracao }}</span>
+    <form action="/musicas/{{ musica.id }}/excluir" method="post" style="margin:0">
+      <button type="submit" class="track-delete-btn" title="Remover música"
+              onclick="return confirm('Remover {{ musica.titulo }}?')">
+        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <div class="tracklist-empty">
+    <p>Nenhuma música adicionada. Adicione faixas abaixo 👇</p>
+  </div>
+  {% endfor %}
+
+  <!-- ── Adicionar Música ── -->
+  <div class="add-track-section">
+    <p class="add-track-title">ADICIONAR FAIXA</p>
+    <form class="add-track-form" method="post" action="/albuns/{{ album.id }}/musicas">
+      <div class="add-track-field" style="flex:2">
+        <label for="track-titulo">Nome da música</label>
+        <input id="track-titulo" type="text" name="titulo"
+               placeholder="Ex: Come Together" required>
+      </div>
+      <div class="add-track-field">
+        <label for="track-faixa">Nº Faixa</label>
+        <input id="track-faixa" type="number" name="numero_faixa"
+               value="{{ musicas | length + 1 }}" min="1">
+      </div>
+      <div class="add-track-field">
+        <label for="track-dur">Duração</label>
+        <input id="track-dur" type="text" name="duracao"
+               placeholder="3:45">
+      </div>
+      <button class="btn-primary" type="submit"
+              style="padding:10px 24px;align-self:flex-end;white-space:nowrap;margin-bottom:0">
+        + Adicionar
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
