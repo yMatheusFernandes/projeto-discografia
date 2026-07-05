@@ -341,14 +341,19 @@ body {
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 4px;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-height: 2.4em; /* Keeps heights aligned when title is single-line */
 }
 .album-card-artist {
   font-size: 0.85rem;
   color: var(--sp-subtext);
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -383,16 +388,16 @@ body {
 /* ── Quick picks (grid 2 colunas compacto) ── */
 .quick-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 48px;
 }
 
 @media (max-width: 900px) {
-  .quick-grid { grid-template-columns: repeat(2, 1fr); }
+  .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .quick-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .quick-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 }
 
 .quick-card {
@@ -431,6 +436,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0; /* Prevents long titles from expanding flex container */
 }
 
 .quick-card-play {
@@ -516,7 +522,7 @@ body {
 /* ─────────────── TRACKLIST ─────────────── */
 .tracklist-header {
   display: grid;
-  grid-template-columns: 40px 1fr 80px 40px;
+  grid-template-columns: 40px minmax(0, 1fr) 80px 40px;
   align-items: center;
   padding: 0 16px 8px;
   border-bottom: 1px solid var(--sp-border);
@@ -530,7 +536,7 @@ body {
 
 .track-row {
   display: grid;
-  grid-template-columns: 40px 1fr 80px 40px;
+  grid-template-columns: 40px minmax(0, 1fr) 80px 40px;
   align-items: center;
   padding: 8px 16px;
   border-radius: var(--radius-sm);
@@ -851,23 +857,23 @@ body {
   /* Home */
   .home-page { padding-top: 4px; }
   .greeting-title { font-size: clamp(1.4rem, 7vw, 2rem); }
-  .albums-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .albums-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .album-card { padding: 12px; }
   .home-section-title { font-size: 1.2rem; }
 
   /* Quick grid */
-  .quick-grid { grid-template-columns: 1fr; gap: 6px; margin-bottom: 32px; }
+  .quick-grid { grid-template-columns: minmax(0, 1fr); gap: 6px; margin-bottom: 32px; }
   .quick-card { height: 56px; }
   .quick-card-cover { width: 56px; height: 56px; }
 
   /* Tracklist */
   .tracklist-header {
-    grid-template-columns: 32px 1fr 60px 36px;
+    grid-template-columns: 32px minmax(0, 1fr) 60px 36px;
     padding: 0 8px 8px;
     font-size: 0.65rem;
   }
   .track-row {
-    grid-template-columns: 32px 1fr 60px 36px;
+    grid-template-columns: 32px minmax(0, 1fr) 60px 36px;
     padding: 8px 8px;
   }
   .track-title { padding: 0 8px; font-size: 0.9rem; }

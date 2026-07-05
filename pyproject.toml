@@ -23,6 +23,7 @@ dev = [
 # pyproject.toml
 [tool.taskipy.tasks]
 run = 'fastapi dev main.py'
+seed = 'python seed.py'
 lint = 'ruff check .'
 format = 'ruff format .'
 
